@@ -1,12 +1,16 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var Slack = require('slack-node');
-var config = require('config');
+var configResolver = require('./modules/configResolver.js');
 var https = require('https');
 var fs = require('fs');
 var firebase = require('firebase');
 var shortid = require('shortid');
 var campaignId = 'test';
+
+const reportsController = require('./controllers/reports.js');
+const validationMiddleware = require('./modules/middleware/validationMiddleware.js');
+const errorMiddleware = require('./modules/middleware/errorMiddleware.js');
 
 var postMessageMethod = 'chat.postMessage';
 var listUsersMethod = 'users.list';
@@ -20,16 +24,15 @@ app.use(bodyParser.json());
 
 var router = express.Router();
 
-router.use(function timeLog (req, res, next) {
-  next();
-})
+router.use(validationMiddleware.validateRequest)
+router.use(errorMiddleware.errorMiddleware)
 
 var firebaseConfig = {
-  apiKey: getConfigVariable("FIRE_API_KEY"),
-  authDomain: getConfigVariable("FIRE_AUTH_DOMAIN"),
-  databaseURL: getConfigVariable("FIRE_DB_URL"),
-  storageBucket: getConfigVariable("FIRE_STORAGE_BUCKET"),
-  messagingSenderId: getConfigVariable("FIRE_SENDER_ID")
+  apiKey: configResolver.getConfigVariable("FIRE_API_KEY"),
+  authDomain: configResolver.getConfigVariable("FIRE_AUTH_DOMAIN"),
+  databaseURL: configResolver.getConfigVariable("FIRE_DB_URL"),
+  storageBucket: configResolver.getConfigVariable("FIRE_STORAGE_BUCKET"),
+  messagingSenderId: configResolver.getConfigVariable("FIRE_SENDER_ID")
 };
 firebase.initializeApp(firebaseConfig);
 function writeVoteData(id, mood, campaign) {
@@ -55,7 +58,7 @@ router.post('/notify', function (req, res) {
 		if (req.body.payload) {
 			var payload = JSON.parse(req.body.payload);
 
-			if (payload.token == getConfigVariable('VERIFICATION_TOKEN')) {
+			if (payload.token == configResolver.getConfigVariable('VERIFICATION_TOKEN')) {
 				var mood = payload.actions[0].value;
 				var id = payload.user.id;
         var campaign = payload.callback_id;
@@ -76,34 +79,27 @@ router.post('/notify', function (req, res) {
 })
 
 router.post('/test-send', function (req, res) {
-	if (req.body.user_name == getConfigVariable('TEST_USER')) {
-    url = getUrlForRequest(getConfigVariable('TEST_USER'));
-    makeHttpsGetRequest(url);
-		res.send('"How was your week?" - notifications sent to private channels. Thanks!');
-	} else {
-    res.send('Error');
-  }
+  url = getUrlForRequest(configResolver.getConfigVariable('TEST_USER'));
+  makeHttpsGetRequest(url);
+	res.send('"How was your week?" - notifications sent to private channels. Thanks!');
 })
 
 router.post('/test-send-many', function (req, res) {
-	if (req.body.user_name == getConfigVariable('TEST_USER')) {
-    setCampaign();
-    sendToMany();
-		res.send('"How was your week?" - notifications sent to private channels. Thanks!');
-	} else {
-    res.send('Error');
-  }
+  setCampaign();
+  sendToMany();
+	res.send('"How was your week?" - notifications sent to private channels. Thanks!');
 })
 
 router.post('/test-read', function(req, res) {
-  if (req.body.user_name == getConfigVariable('TEST_USER')) {
-    return firebase.database().ref('/votes').once('value').then(function(snapshot) {
-      var collections = snapshot.val();
-      readVotes(collections);
-    }).then(function() {
-      res.send('All ok');
-    });
-  }
+  console.log('TEST READ')
+  res.send('OK')
+
+  // return firebase.database().ref('/votes').once('value').then(function(snapshot) {
+  //   var collections = snapshot.val();
+  //   readVotes(collections);
+  // }).then(function() {
+  //   res.send('All ok');
+  // });
 })
 // </Routers>
 
@@ -123,7 +119,7 @@ function readVotes(votes) {
 }
 
 function getUsersList() {
-  slack = new Slack(getConfigVariable('API_TOKEN'));
+  slack = new Slack(configResolver.getConfigVariable('API_TOKEN'));
   slack.api(listUsersMethod, {
   }, function(err, response){
 
@@ -146,17 +142,9 @@ function setCampaign() {
   campaignId = 'C' + Date.now();
 }
 
-function getConfigVariable(variableName) {
-  if (config.has('env_variables.' + variableName)) {
-    return config.get('env_variables.' + variableName);
-  } else {
-    return process.env[variableName];
-  }
-}
-
 function getUrlForRequest(username) {
   return 'https://slack.com/api/' + postMessageMethod +
-    '?token=' + getConfigVariable('API_TOKEN') +
+    '?token=' + configResolver.getConfigVariable('API_TOKEN') +
     '&username=Mr. Moody' +
     '&as_user=false' +
     '&icon_url=https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2016-11-04/100929399430_30f602e36ebfbc81756b_48.jpg' +
@@ -167,14 +155,14 @@ function getUrlForRequest(username) {
 function makeHttpsGetRequest(url) {
   https.get(url, (res) => {
   }).on('error', (e) => {
-    console.error(e);
+    console.error('HTTP error:', e);
   });
 
   return true;
 }
 
 function sendToMany() {
-  slack = new Slack(getConfigVariable('API_TOKEN'));
+  slack = new Slack(configResolver.getConfigVariable('API_TOKEN'));
   slack.api(listUsersMethod, {
   }, function(err, response){
 
@@ -195,8 +183,8 @@ function sendToMany() {
 app.use('/api', router);
 var port = process.env.PORT || 8080;
 app.listen(port, function() {
-  console.log('listening on port ' + port);
-  console.log(version);
-  getUsersList();
-  signInWithEmailPass(getConfigVariable('USER_EMAIL'), getConfigVariable('USER_PASS'));
+  console.log('listening on port ' + port)
+  console.log('version: ' + version)
+  getUsersList()
+  signInWithEmailPass(configResolver.getConfigVariable('USER_EMAIL'), configResolver.getConfigVariable('USER_PASS'))
 });
