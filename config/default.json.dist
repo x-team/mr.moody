@@ -1,0 +1,29 @@
+{
+  "incoming_webhook": {
+    "url": "xxx"
+  },
+  "api": {
+    "oauth": {
+      "client_id": "xxx",
+      "client_secret": "xxx",
+      "code": "xxx",
+      "api_token": "xxx",
+      "verification_token": "xxx"
+    }
+  },
+  "test": {
+    "test_user": "xxx"
+  },
+  "env_variables": {
+    "TEST_USER": "x",
+    "API_TOKEN": "x",
+    "VERIFICATION_TOKEN": "x",
+    "FIRE_API_KEY": "x",
+    "FIRE_AUTH_DOMAIN": "x",
+    "FIRE_DB_URL": "x",
+    "FIRE_STORAGE_BUCKET": "x",
+    "FIRE_SENDER_ID": "x",
+    "USER_EMAIL": "x",
+    "USER_PASS": "x"
+  }
+}
