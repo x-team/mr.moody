@@ -11,4 +11,4 @@ RUN npm install
 
 EXPOSE 8080
 
-CMD supervisor -w app,app/modules,app/controllers app/app.js
+CMD supervisor -w app, app/modules, app/controllers app/app.js
