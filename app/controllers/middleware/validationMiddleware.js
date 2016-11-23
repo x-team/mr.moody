@@ -1,4 +1,4 @@
-var configResolver = require('./../configResolver.js');
+var configResolver = require('./../../modules/configResolver.js');
 
 exports.validateRequest = (req, res, next) => {
   if (req.body.user_name === configResolver.getConfigVariable('AUTH_USER')) {
