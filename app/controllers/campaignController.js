@@ -1,6 +1,6 @@
 const postMessageMethod = 'chat.postMessage'
 const listUsersMethod = 'users.list'
-const Slack = require('slack-node')
+
 
 router.post('/test-send', function (req, res) {
   url = getUrlForRequest(configResolver.getConfigVariable('TEST_USER'));
