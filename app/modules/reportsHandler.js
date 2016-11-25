@@ -42,40 +42,17 @@ getCampaignDate = (campaignName) => {
   return date.toDateString()
 }
 
-module.exports = {
-  getReports,
-  getReportNames,
-  getCampaignReport,
-  getCampaignDate
-}
-
-
-// rest
-
-function writeVoteData(id, mood, campaign) {
+writeVoteData = (id, mood, campaign) => {
   firebase.database().ref('votes/' + campaign + '/' + id).set({
     mood: mood,
     date: Date.now()
   })
 }
 
-function signInWithEmailPass(email, password) {
-  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-    var errorCode = error.code
-    var errorMessage = error.message
-  })
-}
-
-function readVotes(votes) {
-  for (var campaign in votes) {
-    var dateNow = parseInt(campaign.substring(1, campaign.lenght))
-    date = new Date(dateNow)
-    var dateOfCampaign = date.toDateString()
-
-    console.log('Campaign date : ' + dateOfCampaign)
-    campaignCollection = votes[campaign]
-    for (var userId in campaignCollection) {
-      console.log(slackUsers[userId] + ' ' + campaignCollection[userId].mood)
-    }
-  }
+module.exports = {
+  getReports,
+  getReportNames,
+  getCampaignReport,
+  getCampaignDate,
+  writeVoteData
 }
