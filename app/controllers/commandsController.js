@@ -18,11 +18,15 @@ router.post('/commands', function (req, res) {
   switch (command) {
     case "campaign:test":
       sendChatMessageToTestUser()
-      res.send('Starting campaign')
+      res.send('Testing ...')
       break;
     case "campaign:start":
-      sendChatMessageToTestUsers()
-      res.send('Starting campaign')
+      if (configResolver.getConfigVariable('IS_PRODUCTION_ENV')) {
+        sendChatMessageToTestUsers()
+        res.send('Starting campaign ...')
+      } else {
+        res.send('This is not production ENV!')
+      }
       break;
     case "campaign:list":
       generateCampaignsReport(req, res);
@@ -32,7 +36,7 @@ router.post('/commands', function (req, res) {
       generateCampaignReport(campaignId, req, res)
       break;
     default:
-      res.send('You have to pick action')
+      res.send('You have to pick action!')
   }
 })
 

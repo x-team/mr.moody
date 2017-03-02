@@ -38,4 +38,14 @@ docker-compose down
 Get familiar with contents of app directory - it's contents are copied into /src/
 directory in container.
 
-When container starts, it runs app.js script.
+When container starts, it runs `app.js` script.
+
+# Setup Firebase
+
+Create new project
+
+Use "Add firebase to your Web App" to get credentials
+
+Copy and past to `config\default.json`
+
+# Setup Slack API_TOKEN

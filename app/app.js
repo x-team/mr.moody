@@ -5,7 +5,7 @@ const fs = require('fs')
 const shortid = require('shortid')
 const app = express()
 const router = require('./controllers')
-const version = 'v.0.0.13'
+const version = 'v.0.0.14'
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())

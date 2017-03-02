@@ -1,19 +1,4 @@
 {
-  "incoming_webhook": {
-    "url": "xxx"
-  },
-  "api": {
-    "oauth": {
-      "client_id": "xxx",
-      "client_secret": "xxx",
-      "code": "xxx",
-      "api_token": "xxx",
-      "verification_token": "xxx"
-    }
-  },
-  "test": {
-    "test_user": "xxx"
-  },
   "env_variables": {
     "TEST_USER": "xxx",
     "API_TOKEN": "xxx",
