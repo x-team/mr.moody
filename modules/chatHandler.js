@@ -45,7 +45,7 @@ sendMoodMessage = (campaignId, user) => {
   return new Promise((resolve, reject) => {
     slack.api(chatPostMessageMethod, {
       username: process.env.BOT_NAME,
-      as_user: false,
+      as_user: true,
       channel: '@' + user,
       attachments: attachments
     }, function(err, response) {
