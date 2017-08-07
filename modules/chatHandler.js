@@ -1,6 +1,7 @@
 const Slack = require('slack-node')
 const attachmentsResolver = require('./attachmentsResolver')
 const slack = new Slack(process.env.API_TOKEN)
+const slackBot = new Slack(process.env.BOT_TOKEN)
 
 const listUsersMethod = 'users.list'
 const chatPostMessageMethod = 'chat.postMessage'
@@ -43,7 +44,7 @@ encodeUsers = (response) => {
 sendMoodMessage = (campaignId, user) => {
   attachments = attachmentsResolver.getAttachments(campaignId)
   return new Promise((resolve, reject) => {
-    slack.api(chatPostMessageMethod, {
+    slackBot.api(chatPostMessageMethod, {
       username: process.env.BOT_NAME,
       as_user: true,
       channel: '@' + user,
