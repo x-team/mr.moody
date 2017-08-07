@@ -2,7 +2,6 @@ const express = require('express')
 const router = new express.Router()
 
 const chatHandler = require('./../modules/chatHandler')
-const configResolver = require('./../modules/configResolver')
 const reportsHandler = require('./../modules/reportsHandler')
 
 router.post('/commands', function (req, res) {
@@ -40,7 +39,7 @@ module.exports = router
 
 sendChatMessageToTestUser = () => {
   campaignId = 'C' + Date.now()
-  chatHandler.sendMoodMessage(campaignId, configResolver.getConfigVariable('TEST_USER'))
+  chatHandler.sendMoodMessage(campaignId, process.env.TEST_USER)
 }
 
 sendChatMessageToTestUsers = () => {

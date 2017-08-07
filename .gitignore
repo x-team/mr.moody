@@ -1,3 +1,5 @@
 .DS_Store
 config/default.json
 sslcert/
+node_modules/
+.env
