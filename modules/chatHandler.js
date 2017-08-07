@@ -47,7 +47,6 @@ sendMoodMessage = (campaignId, user) => {
       username: process.env.BOT_NAME,
       as_user: false,
       channel: '@' + user,
-      icon_url: process.env.BOT_ICON_URL,
       attachments: attachments
     }, function(err, response) {
       if (err) {
