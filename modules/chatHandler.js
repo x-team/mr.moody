@@ -1,7 +1,6 @@
 const Slack = require('slack-node')
-const configResolver = require('./configResolver')
 const attachmentsResolver = require('./attachmentsResolver')
-const slack = new Slack(configResolver.getConfigVariable('API_TOKEN'))
+const slack = new Slack(process.env.API_TOKEN)
 
 const listUsersMethod = 'users.list'
 const chatPostMessageMethod = 'chat.postMessage'
@@ -45,10 +44,10 @@ sendMoodMessage = (campaignId, user) => {
   attachments = attachmentsResolver.getAttachments(campaignId)
   return new Promise((resolve, reject) => {
     slack.api(chatPostMessageMethod, {
-      username: configResolver.getConfigVariable('BOT_NAME'),
+      username: process.env.BOT_NAME,
       as_user: false,
       channel: '@' + user,
-      icon_url: configResolver.getConfigVariable('BOT_ICON_URL'),
+      icon_url: process.env.BOT_ICON_URL,
       attachments: attachments
     }, function(err, response) {
       if (err) {
@@ -74,8 +73,8 @@ filterActiveUsers = (data) => {
     if(!userData.is_bot && !userData.deleted && !userData.is_restricted) {
       slackUsername = data.response.members[index].name;
 
-      if (!configResolver.getConfigVariable('IS_PROD_ENV')) {
-        if (slackUsername === configResolver.getConfigVariable('TEST_USER')) {
+      if (!process.env.IS_PROD_ENV) {
+        if (slackUsername === process.env.TEST_USER) {
           users.push(slackUsername)
         }
       } else {

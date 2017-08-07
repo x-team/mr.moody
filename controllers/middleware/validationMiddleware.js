@@ -1,11 +1,9 @@
-var configResolver = require('./../../modules/configResolver.js');
-
 exports.validateRequest = (req, res, next) => {
   if (req.url === '/votes') {
     next()
     return;
   }
-  if (req.body.user_name === configResolver.getConfigVariable('AUTH_USER')) {
+  if (req.body.user_name === process.env.AUTH_USER) {
     next();
     return;
   }

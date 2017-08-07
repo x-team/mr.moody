@@ -1,11 +1,10 @@
 const firebase = require('firebase')
-const configResolver = require('./configResolver.js')
 const firebaseConfig = {
-  apiKey: configResolver.getConfigVariable("FIRE_API_KEY"),
-  authDomain: configResolver.getConfigVariable("FIRE_AUTH_DOMAIN"),
-  databaseURL: configResolver.getConfigVariable("FIRE_DB_URL"),
-  storageBucket: configResolver.getConfigVariable("FIRE_STORAGE_BUCKET"),
-  messagingSenderId: configResolver.getConfigVariable("FIRE_SENDER_ID")
+  apiKey: process.env.FIRE_API_KEY,
+  authDomain: process.env.FIRE_AUTH_DOMAIN,
+  databaseURL: process.env.FIRE_DB_URL,
+  storageBucket: process.env.FIRE_STORAGE_BUCKET,
+  messagingSenderId: process.env.FIRE_SENDER_ID
 }
 firebase.initializeApp(firebaseConfig)
 
