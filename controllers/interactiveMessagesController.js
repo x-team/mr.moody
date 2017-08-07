@@ -11,7 +11,7 @@ router.post('/votes', function (req, res) {
 		campaign = payload.callback_id
 		reportsHandler.writeVoteData(id, mood, campaign)
 		message = {
-			"text": "Thank you for your answer. Have a great weekend!",
+			"text": "Thank you for your answer. Have a great next week!",
 		};
 		res.json(message);
 
