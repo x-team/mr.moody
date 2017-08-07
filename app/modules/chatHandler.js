@@ -24,6 +24,7 @@ getUsersList = (report) => {
 
 const getEncodedReport = (report) => getUsersList(report).then(encodeUsers)
 const sendMultipleMoodMessages = () => getUsersList().then(filterActiveUsers).then(sendMoodMessages)
+const testUserGroup = () => getUsersList().then(filterActiveUsers).then(printUsers)
 
 encodeUsers = (response) => {
   encodedReport = []
@@ -69,7 +70,8 @@ sendMoodMessages = (users) => {
 filterActiveUsers = (data) => {
   users = []
   for(var index in data.response.members){
-    if(!data.response.members[index].is_bot && !data.response.members[index].deleted) {
+    const userData = data.response.members[index]
+    if(!userData.is_bot && !userData.deleted && !userData.is_restricted) {
       slackUsername = data.response.members[index].name;
 
       if (!configResolver.getConfigVariable('IS_PROD_ENV')) {
@@ -84,8 +86,13 @@ filterActiveUsers = (data) => {
   return users
 }
 
+printUsers = (users) => {
+  console.log(JSON.stringify(users))
+}
+
 module.exports = {
   getEncodedReport,
   sendMoodMessage,
-  sendMultipleMoodMessages
+  sendMultipleMoodMessages,
+  testUserGroup
 }
