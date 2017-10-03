@@ -14,6 +14,7 @@ const getReportNames = () => getReports().then(extractCampaignNames)
 const getCampaignReport = (campaignId) => getReports().then(extractReport).then(extractNameAndMood)
 
 const getReports = () => {
+  console.log(campaignId)
   return firebase.database().ref('/votes').once('value').then(snapshot => {
     return snapshot.val() || []
   })

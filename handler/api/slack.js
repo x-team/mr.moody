@@ -6,6 +6,8 @@ const bot = controller.spawn({
   token: process.env.BOT_TOKEN
 })
 
+const getEncodedReport = (report) => getUsers(report).then(encodeUsers)
+
 const getUsers = (report) => {
   return new Promise((resolve, reject) => {
     bot.api.users.list({}, (err, response) => {
@@ -78,5 +80,6 @@ export {
   getUsers,
   filterActiveUsers,
   sendMoodMessage,
-  encodeUsers
+  encodeUsers,
+  getEncodedReport
 }
