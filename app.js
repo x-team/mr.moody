@@ -1,20 +1,15 @@
-const express = require('express')
-const bodyParser = require('body-parser')
+import express from 'express'
+import bodyParser from 'body-parser'
+import router from './controller'
+import { testUserGroup } from './handler/chat'
+
 const app = express()
-const router = require('./controllers')
-const version = 'v.0.0.14'
-const chatHandler = require('./modules/chatHandler')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use('/api', router)
 
-app.use('/api', router);
+const port = process.env.PORT || 3000
+app.listen(port)
 
-var port = process.env.PORT || 8080
-app.listen(port, function() {
-  console.log('listening on port ' + port)
-  console.log('version: ' + version)
-  console.log('C' + Date.now())
-});
-
-chatHandler.testUserGroup()
+testUserGroup()

@@ -1,8 +1,8 @@
-const express = require('express')
-const router = new express.Router()
+import express from 'express'
+import chatHandler from './../handler/chat'
+import reportsHandler from './../handler/reports'
 
-const chatHandler = require('./../modules/chatHandler')
-const reportsHandler = require('./../modules/reportsHandler')
+const router = new express.Router()
 
 router.post('/commands', function (req, res) {
   action = req.body.text
@@ -35,18 +35,16 @@ router.post('/commands', function (req, res) {
   }
 })
 
-module.exports = router
-
-sendChatMessageToTestUser = () => {
+const sendChatMessageToTestUser = () => {
   campaignId = 'C' + Date.now()
   chatHandler.sendMoodMessage(campaignId, process.env.TEST_USER)
 }
 
-sendChatMessageToUsers = () => {
+const sendChatMessageToUsers = () => {
   chatHandler.sendMultipleMoodMessages()
 }
 
-generateCampaignsReport = (req, res) => {
+const generateCampaignsReport = (req, res) => {
   reportsHandler.getReportNames().then(reportsNames => {
     response = reportsNames.map(reportsHandler.getCampaignDate).map(function(reportDate, index) {
       return reportDate + ' : ' + reportsNames[index]
@@ -55,10 +53,12 @@ generateCampaignsReport = (req, res) => {
   })
 }
 
-generateCampaignReport = (campaignId, req, res) => {
+const generateCampaignReport = (campaignId, req, res) => {
   reportsHandler.getCampaignReport().then(report => {
     chatHandler.getEncodedReport(report).then(encodedReport => {
       res.send(encodedReport)
     })
   })
 }
+
+export default router

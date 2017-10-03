@@ -1,7 +1,7 @@
-const express = require('express')
-const router = new express.Router()
+import express from 'express'
+import reportsHandler from './../handler/reports'
 
-const reportsHandler = require('./../modules/reportsHandler')
+const router = new express.Router()
 
 router.post('/votes', function (req, res) {
 	if (req.body.payload) {
@@ -20,4 +20,4 @@ router.post('/votes', function (req, res) {
 	}
 })
 
-module.exports = router
+export default router

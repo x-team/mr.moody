@@ -1,4 +1,5 @@
-const firebase = require('firebase')
+import firebase from 'firebase'
+
 const firebaseConfig = {
   apiKey: process.env.FIRE_API_KEY,
   authDomain: process.env.FIRE_AUTH_DOMAIN,
@@ -9,14 +10,16 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 const getReportNames = () => getReports().then(extractCampaignNames)
+
 const getCampaignReport = (campaignId) => getReports().then(extractReport).then(extractNameAndMood)
-getReports = () => {
+
+const getReports = () => {
   return firebase.database().ref('/votes').once('value').then(snapshot => {
     return snapshot.val() || []
   })
 }
 
-extractNameAndMood = (report) => {
+const extractNameAndMood = (report) => {
   votes = []
   for ( var userId in report) {
     votes[userId] = report[userId].mood
@@ -24,7 +27,7 @@ extractNameAndMood = (report) => {
   return votes
 }
 
-extractCampaignNames = (reports) => {
+const extractCampaignNames = (reports) => {
   names = []
   for (var name in reports) {
     names.push(name)
@@ -32,23 +35,23 @@ extractCampaignNames = (reports) => {
   return names
 }
 
-extractReport = (reports) => {
+const extractReport = (reports) => {
   return reports[campaignId]
 }
 
-getCampaignDate = (campaignName) => {
+const getCampaignDate = (campaignName) => {
   var date = new Date(parseInt(campaignName.substring(1, campaignName.lenght)))
   return date.toDateString()
 }
 
-writeVoteData = (id, mood, campaign) => {
+const writeVoteData = (id, mood, campaign) => {
   firebase.database().ref('votes/' + campaign + '/' + id).set({
     mood: mood,
     date: Date.now()
   })
 }
 
-module.exports = {
+export {
   getReports,
   getReportNames,
   getCampaignReport,
