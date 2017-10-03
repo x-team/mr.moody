@@ -20,7 +20,7 @@ router.post('/commands', function (req, res) {
       res.send('Starting campaign')
       break;
     case "campaign:start":
-      sendChatMessageToTestUsers()
+      sendChatMessageToUsers()
       res.send('Starting campaign')
       break;
     case "campaign:list":
@@ -42,7 +42,7 @@ sendChatMessageToTestUser = () => {
   chatHandler.sendMoodMessage(campaignId, process.env.TEST_USER)
 }
 
-sendChatMessageToTestUsers = () => {
+sendChatMessageToUsers = () => {
   chatHandler.sendMultipleMoodMessages()
 }
 
