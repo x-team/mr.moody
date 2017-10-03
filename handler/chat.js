@@ -1,15 +1,13 @@
 import { getUsers, filterActiveUsers, encodeUsers, sendMoodMessage } from './api/slack'
 
-const listUsersMethod = 'users.list'
-const chatPostMessageMethod = 'chat.postMessage'
-
-const getEncodedReport = (report) => getUsersList(report).then(encodeUsers)
-const sendMultipleMoodMessages = () => getUsersList().then(filterActiveUsers).then(sendMoodMessages)
+const getEncodedReport = (report) => getUsers(report).then(encodeUsers)
+const sendMultipleMoodMessages = () => getUsers().then(filterActiveUsers).then(sendMoodMessages)
 const testUserGroup = () => getUsers().then(filterActiveUsers).then(printUsers)
 
 const sendMoodMessages = (users) => {
-  campaignId = 'C' + Date.now()
+  const campaignId = 'C' + Date.now()
   for (var index in users) {
+    console.log('sending to ...', users[index])
     sendMoodMessage(campaignId, users[index])
   }
 }

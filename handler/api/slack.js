@@ -44,12 +44,12 @@ const filterActiveUsers = (data) => {
 const sendMoodMessage = (campaignId, user) => {
   const attachments = getAttachments(campaignId)
   return new Promise((resolve, reject) => {
-    slackBot.api(chatPostMessageMethod, {
+    bot.api.chat.postMessage({
       username: process.env.BOT_NAME,
       as_user: true,
       channel: '@' + user,
       attachments: attachments
-    }, function(err, response) {
+    }, (err, response) => {
       if (err) {
         reject(err)
       } else {

@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import router from './controller'
 import { testUserGroup } from './handler/chat'
 import { mondayNoonJob, friday5PMCronJob } from './util/cron'
+import { sendMultipleMoodMessages } from './handler/chat'
 
 const app = express()
 
@@ -13,5 +14,4 @@ app.use('/api', router)
 const port = process.env.PORT || 3000
 app.listen(port)
 
-mondayNoonJob()
-friday5PMCronJob()
+friday5PMCronJob(sendMultipleMoodMessages)
