@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "eslint": "./node_modules/.bin/eslint **/*.js --fix"
+    "eslint": "./node_modules/.bin/eslint **/*.js --fix",
+    "test": "jest"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -13,5 +14,8 @@
     "firebase": "3.6.1",
     "shortid": "2.2.6",
     "slack-node": "^0.1.8"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1"
   }
 }

@@ -5,6 +5,6 @@ const getAttachments = (campaignId) => {
     return JSON.stringify(resources_attachemnts)
 }
 
-module.export = {
+module.exports = {
     getAttachments
 }
