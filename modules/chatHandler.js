@@ -6,7 +6,7 @@ const slackBot = new Slack(process.env.BOT_TOKEN)
 const listUsersMethod = 'users.list'
 const chatPostMessageMethod = 'chat.postMessage'
 
-getUsersList = (report) => {
+const getUsersList = (report) => {
     return new Promise((resolve, reject) => {
         slack.api(listUsersMethod, {}, function(err, response) {
             if (err) {
@@ -24,10 +24,9 @@ getUsersList = (report) => {
 
 const getEncodedReport = (report) => getUsersList(report).then(encodeUsers)
 const sendMultipleMoodMessages = () => getUsersList().then(filterActiveUsers).then(sendMoodMessages)
-const testUserGroup = () => getUsersList().then(filterActiveUsers).then(printUsers)
 
-encodeUsers = (response) => {
-    encodedReport = []
+const encodeUsers = (response) => {
+    let encodedReport = []
     for(var index in response.response.members) {
         if(!response.response.members[index].is_bot
       && !response.response.members[index].deleted
@@ -41,8 +40,8 @@ encodeUsers = (response) => {
     return encodedReport
 }
 
-sendMoodMessage = (campaignId, user) => {
-    attachments = attachmentsResolver.getAttachments(campaignId)
+const sendMoodMessage = (campaignId, user) => {
+    const attachments = attachmentsResolver.getAttachments(campaignId)
     return new Promise((resolve, reject) => {
         slackBot.api(chatPostMessageMethod, {
             username: process.env.BOT_NAME,
@@ -59,19 +58,19 @@ sendMoodMessage = (campaignId, user) => {
     })
 }
 
-sendMoodMessages = (users) => {
-    campaignId = 'C' + Date.now()
+const sendMoodMessages = (users) => {
+    const campaignId = 'C' + Date.now()
     for (var index in users) {
         sendMoodMessage(campaignId, users[index])
     }
 }
 
-filterActiveUsers = (data) => {
-    users = []
+const filterActiveUsers = (data) => {
+    let users = []
     for(var index in data.response.members){
         const userData = data.response.members[index]
         if(!userData.is_bot && !userData.deleted && !userData.is_restricted) {
-            slackUsername = data.response.members[index].name
+            const slackUsername = data.response.members[index].name
 
             if (!process.env.IS_PROD_ENV) {
                 if (slackUsername === process.env.TEST_USER) {
@@ -85,13 +84,8 @@ filterActiveUsers = (data) => {
     return users
 }
 
-printUsers = (users) => {
-    console.log(JSON.stringify(users))
-}
-
 module.exports = {
     getEncodedReport,
     sendMoodMessage,
-    sendMultipleMoodMessages,
-    testUserGroup
+    sendMultipleMoodMessages
 }

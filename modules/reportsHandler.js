@@ -10,38 +10,39 @@ firebase.initializeApp(firebaseConfig)
 
 const getReportNames = () => getReports().then(extractCampaignNames)
 const getCampaignReport = (campaignId) => getReports().then(extractReport).then(extractNameAndMood)
-getReports = () => {
+
+const getReports = () => {
     return firebase.database().ref('/votes').once('value').then(snapshot => {
         return snapshot.val() || []
     })
 }
 
-extractNameAndMood = (report) => {
-    votes = []
+const extractNameAndMood = (report) => {
+    let votes = []
     for ( var userId in report) {
         votes[userId] = report[userId].mood
     }
     return votes
 }
 
-extractCampaignNames = (reports) => {
-    names = []
+const extractCampaignNames = (reports) => {
+    let names = []
     for (var name in reports) {
         names.push(name)
     }
     return names
 }
 
-extractReport = (reports) => {
+const extractReport = (reports) => {
     return reports[campaignId]
 }
 
-getCampaignDate = (campaignName) => {
-    var date = new Date(parseInt(campaignName.substring(1, campaignName.lenght)))
+const getCampaignDate = (campaignName) => {
+    const date = new Date(parseInt(campaignName.substring(1, campaignName.lenght)))
     return date.toDateString()
 }
 
-writeVoteData = (id, mood, campaign) => {
+const writeVoteData = (id, mood, campaign) => {
     firebase.database().ref('votes/' + campaign + '/' + id).set({
         mood: mood,
         date: Date.now()

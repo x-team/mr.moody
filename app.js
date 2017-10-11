@@ -16,5 +16,3 @@ app.listen(port, function() {
   console.log('version: ' + version)
   console.log('C' + Date.now())
 });
-
-chatHandler.testUserGroup()
