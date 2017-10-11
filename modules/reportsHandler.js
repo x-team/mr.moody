@@ -38,7 +38,7 @@ const extractReport = (reports) => {
 }
 
 const getCampaignDate = (campaignName) => {
-    const date = new Date(parseInt(campaignName.substring(1, campaignName.lenght)))
+    const date = new Date(parseInt(campaignName.substring(1, campaignName.length)))
     return date.toDateString()
 }
 
