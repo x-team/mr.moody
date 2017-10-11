@@ -3,13 +3,15 @@
   "version": "0.0.14",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "eslint": "./node_modules/.bin/eslint **/*.js --fix"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "eslint": "^4.8.0",
     "express": "~4.0.0",
-    "slack-node": "^0.1.8",
     "firebase": "3.6.1",
-    "shortid": "2.2.6"
+    "shortid": "2.2.6",
+    "slack-node": "^0.1.8"
   }
 }
