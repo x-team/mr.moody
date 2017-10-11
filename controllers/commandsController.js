@@ -60,7 +60,7 @@ const generateCampaignsReport = (req, res) => {
 }
 
 const generateCampaignReport = (campaignId, req, res) => {
-    reportsHandler.getCampaignReport().then(report => {
+    reportsHandler.getCampaignReport(campaignId).then(report => {
         chatHandler.getEncodedReport(report).then(encodedReport => {
             res.send(encodedReport)
         })

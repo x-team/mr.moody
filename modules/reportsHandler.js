@@ -9,7 +9,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 const getReportNames = () => getReports().then(extractCampaignNames)
-const getCampaignReport = (campaignId) => getReports().then(extractReport).then(extractNameAndMood)
+const getCampaignReport = (campaignId) => getReports().then((reports) => extractReport(reports, campaignId)).then(extractNameAndMood)
 
 const getReports = () => {
     return firebase.database().ref('/votes').once('value').then(snapshot => {
@@ -33,7 +33,7 @@ const extractCampaignNames = (reports) => {
     return names
 }
 
-const extractReport = (reports) => {
+const extractReport = (reports, campaignId) => {
     return reports[campaignId]
 }
 
