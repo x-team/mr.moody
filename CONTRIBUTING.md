@@ -1,5 +1,5 @@
-<h1 align="center">:heart: ***THANK YOU*** :heart:</h1>
-<p align="center"> *We greatly appreciate your contributions!<br> Thanks for even consider doing some good in here.* </p>
+<h1 align="center">:heart: THANK YOU :heart:</h1>
+<p align="center"> We greatly appreciate your contributions!<br> Thanks for even consider doing some good in here. </p>
 
 ## How do I contribute ?
 * there is a list of issues in [Issues](https://github.com/jacekelgda/mr.moody/issues) section. You can start in there be resolving some of them.
